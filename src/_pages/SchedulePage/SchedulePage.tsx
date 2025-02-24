@@ -34,7 +34,7 @@ export const SchedulePage: FC<SchedulePageProps> = ({ events: _events }) => {
 
   const handleSelectEvent = (calendarEvent: BigCalendarEvent) => {
     setSelectedCalendarEvent(
-      convertBigCalendarEventToCalendarEvent(calendarEvent)
+      convertBigCalendarEventToCalendarEvent(calendarEvent, timezone)
     );
     setScheduleDialogOpen(true);
   };
@@ -64,6 +64,7 @@ export const SchedulePage: FC<SchedulePageProps> = ({ events: _events }) => {
         open={scheduleDialogOpen}
         onOpenChange={setScheduleDialogOpen}
         calendarEvent={selectedCalendarEvent}
+        timezone={timezone}
       />
     </>
   );

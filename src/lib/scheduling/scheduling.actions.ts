@@ -11,18 +11,22 @@ export const createCalendarEvent = async (
     startTime,
     endDate,
     endTime,
+    timezone,
   }: {
     title: string;
     startDate: string;
     startTime: string;
     endDate?: string;
     endTime?: string;
+    timezone: string;
   },
   path: string
 ) => {
-  const start = day(`${startDate} ${startTime}`).toISOString();
+  const start = day.tz(`${startDate} ${startTime}`, timezone).toISOString();
   const end =
-    endDate && endTime ? day(`${endDate} ${endTime}`).toISOString() : undefined;
+    endDate && endTime
+      ? day.tz(`${endDate} ${endTime}`, timezone).toISOString()
+      : undefined;
 
   const calendarEvent = await prisma.calendarEvent.create({
     data: {
@@ -48,6 +52,7 @@ export const updateCalendarEvent = async (
     startTime,
     endDate,
     endTime,
+    timezone,
   }: {
     id: string;
     title: string;
@@ -55,12 +60,15 @@ export const updateCalendarEvent = async (
     startTime: string;
     endDate?: string;
     endTime?: string;
+    timezone: string;
   },
   path: string
 ) => {
-  const start = day(`${startDate} ${startTime}`).toISOString();
+  const start = day.tz(`${startDate} ${startTime}`, timezone).toISOString();
   const end =
-    endDate && endTime ? day(`${endDate} ${endTime}`).toISOString() : undefined;
+    endDate && endTime
+      ? day.tz(`${endDate} ${endTime}`, timezone).toISOString()
+      : undefined;
 
   const calendarEvent = await prisma.calendarEvent.update({
     where: {

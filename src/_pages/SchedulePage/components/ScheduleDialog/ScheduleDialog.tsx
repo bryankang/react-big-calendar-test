@@ -8,12 +8,14 @@ export type ScheduleDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   calendarEvent?: CalendarEvent;
+  timezone: string;
 };
 
 export const ScheduleDialog: FC<ScheduleDialogProps> = ({
   open,
   onOpenChange,
   calendarEvent,
+  timezone,
 }) => {
   const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState("");
@@ -25,23 +27,29 @@ export const ScheduleDialog: FC<ScheduleDialogProps> = ({
   useEffect(() => {
     if (calendarEvent) {
       setTitle(calendarEvent.title);
-      setStartDate(day(calendarEvent.start).format("YYYY-MM-DD"));
-      setStartTime(day(calendarEvent.start).format("HH:mm"));
+      setStartDate(
+        day.utc(calendarEvent.start).tz(timezone).format("YYYY-MM-DD")
+      );
+      setStartTime(day.utc(calendarEvent.start).tz(timezone).format("HH:mm"));
       setEndDate(
-        calendarEvent.end ? day(calendarEvent.end).format("YYYY-MM-DD") : ""
+        calendarEvent.end
+          ? day.utc(calendarEvent.end).tz(timezone).format("YYYY-MM-DD")
+          : ""
       );
       setEndTime(
-        calendarEvent.end ? day(calendarEvent.end).format("HH:mm") : ""
+        calendarEvent.end
+          ? day.utc(calendarEvent.end).tz(timezone).format("HH:mm")
+          : ""
       );
     } else {
       reset();
     }
-  }, [calendarEvent]);
+  }, [calendarEvent, timezone]);
 
   const reset = () => {
     setTitle("");
-    setStartDate(day().format("YYYY-MM-DD"));
-    setStartTime(day().format("HH:mm"));
+    setStartDate(day.utc().tz(timezone).format("YYYY-MM-DD"));
+    setStartTime(day.utc().tz(timezone).format("HH:mm"));
     setEndDate("");
     setEndTime("");
   };
@@ -60,6 +68,7 @@ export const ScheduleDialog: FC<ScheduleDialogProps> = ({
             startTime,
             endDate,
             endTime,
+            timezone,
           },
           "/"
         );
@@ -71,6 +80,7 @@ export const ScheduleDialog: FC<ScheduleDialogProps> = ({
             startTime,
             endDate,
             endTime,
+            timezone,
           },
           "/"
         );
