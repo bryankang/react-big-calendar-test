@@ -8,9 +8,10 @@ import {
   convertCalendarEventsToBigCalendarEvents,
 } from "@/lib/scheduling";
 import { CalendarEvent } from "@prisma/client";
-import { Button, Flex, Select } from "@radix-ui/themes";
+import { Button, Flex } from "@radix-ui/themes";
 import { FC, useMemo, useState } from "react";
 import styles from "./SchedulePage.module.css";
+import { TimezoneSelect } from "./components/TimezoneSelect/TimezoneSelect";
 
 export type SchedulePageProps = {
   events: CalendarEvent[];
@@ -48,18 +49,7 @@ export const SchedulePage: FC<SchedulePageProps> = ({ events: _events }) => {
           p="2"
           className={styles.header}
         >
-          <Select.Root value={timezone} onValueChange={setTimezone}>
-            <Select.Trigger />
-            <Select.Content>
-              <Select.Item value="America/New_York">
-                America/New_York
-              </Select.Item>
-              <Select.Item value="America/Los_Angeles">
-                America/Los_Angeles
-              </Select.Item>
-              <Select.Item value="Asia/Seoul">Asia/Seoul</Select.Item>
-            </Select.Content>
-          </Select.Root>
+          <TimezoneSelect value={timezone} onValueChange={setTimezone} />
           <Button onClick={handleCreateEvent}>Create event</Button>
         </Flex>
         <Flex flexGrow="1" flexBasis="0" p="2">
